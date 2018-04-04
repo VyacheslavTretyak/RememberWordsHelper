@@ -47,11 +47,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppParams.cs" />
     <Compile Include="NotifyForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NotifyForm.Designer.cs">
       <DependentUpon>NotifyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ParamsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ParamsForm.Designer.cs">
+      <DependentUpon>ParamsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RemeberWordsForm.cs">
       <SubType>Form</SubType>
@@ -71,18 +83,17 @@
     <EmbeddedResource Include="NotifyForm.resx">
       <DependentUpon>NotifyForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ParamsForm.resx">
+      <DependentUpon>ParamsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RemeberWordsForm.resx">
       <DependentUpon>RemeberWordsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -105,7 +116,13 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icon.ico" />
+    <None Include="Resources\param.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paramImg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\translate.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

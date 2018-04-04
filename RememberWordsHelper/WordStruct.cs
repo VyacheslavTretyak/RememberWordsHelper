@@ -12,6 +12,5 @@ namespace RememberWordsHelper
 		public string Ukr { get; set; }
 		public DateTime Time { get; set; }
 		public DateTime LastShow { get; set; }
-		public int CountShow { get; set; }
 	}
 }

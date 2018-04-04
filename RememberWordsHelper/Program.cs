@@ -16,7 +16,7 @@ namespace RememberWordsHelper
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new RemeberWordsForm());
+			Application.Run(new RememberWordsForm());
 		}
 	}
 }

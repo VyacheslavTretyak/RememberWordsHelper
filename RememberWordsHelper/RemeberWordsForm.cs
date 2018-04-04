@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace RememberWordsHelper
 {
 	
-	public partial class RemeberWordsForm : Form
+	public partial class RememberWordsForm : Form
 	{
 		private Color nonTextColor;
 		private Color textColor;
@@ -20,19 +20,24 @@ namespace RememberWordsHelper
 		private bool isShow = false;
 		private Timer timer;
 		private NotifyForm notifyForm;
-		public RemeberWordsForm()
+		private ParamsForm paramsForm;		
+		public AppParams Params { get; set; }
+		public RememberWordsForm()
 		{
 			InitializeComponent();
+			notifyForm = new NotifyForm();
+			paramsForm = new ParamsForm();
+
 			try
 			{
-				wordReminder = new WordReminder();
+				Params = paramsForm.LoadParam();
+				wordReminder = new WordReminder(Params);				
 			}
 			catch(Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}
-			notifyForm = new NotifyForm();	
-			
+
 			Load += RemeberWordsForm_Load;
 			FormClosing += RemeberWordsForm_FormClosing;
 			Resize += RemeberWordsForm_Resize;
@@ -41,8 +46,17 @@ namespace RememberWordsHelper
 			LoadTimer();
 
 			btnAdd.Click += BtnAdd_Click;
+			btnParam.Click += BtnParam_Click;
 			notifyIcon1.Click += NotifyIcon1_Click;
 		}
+
+		private void BtnParam_Click(object sender, EventArgs e)
+		{
+			Size scr = Screen.PrimaryScreen.WorkingArea.Size;
+			paramsForm.Location = new Point(scr.Width - paramsForm.Size.Width, scr.Height - paramsForm.Size.Height);
+			paramsForm.ShowDialog(Params);
+		}
+
 		private void RemeberWordsForm_Shown(object sender, EventArgs e)
 		{			
 			Visible = false;
@@ -59,16 +73,14 @@ namespace RememberWordsHelper
 		
 		private void RemeberWordsForm_Load(object sender, EventArgs e)
 		{
-
 			BackColor = System.Drawing.SystemColors.ActiveCaptionText;
 			StartPosition = FormStartPosition.Manual;
 			Size scr = Screen.PrimaryScreen.WorkingArea.Size;
 			Location = new Point(scr.Width - Size.Width, scr.Height - Size.Height);
 
-			Icon = Resource.icon;
-			notifyIcon1.Icon = Resource.icon;			
-			WindowState = FormWindowState.Minimized;			
-			
+			Icon = Properties.Resources.translate;
+			notifyIcon1.Icon = Icon;
+			WindowState = FormWindowState.Minimized;		
 		}
 		private void LoadTimer()
 		{
@@ -80,7 +92,11 @@ namespace RememberWordsHelper
 
 		private void Timer_Tick(object sender, EventArgs e)
 		{
-			notifyForm.Show(wordReminder.Next());
+			WordStruct word = wordReminder.Next();
+			if (word != null)
+			{
+				notifyForm.Show(word);
+			}
 		}
 
 		private void NotifyIcon1_Click(object sender, EventArgs e)
@@ -101,6 +117,7 @@ namespace RememberWordsHelper
 		{
 			try
 			{
+				paramsForm.SaveParam(Params);
 				wordReminder.Close();
 			}
 			catch (Exception ex)
@@ -149,7 +166,7 @@ namespace RememberWordsHelper
 			tb.ForeColor = textColor;
 		}		
 
-		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+		private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Close();
 		}

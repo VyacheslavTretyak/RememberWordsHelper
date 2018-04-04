@@ -1,6 +1,6 @@
 ﻿namespace RememberWordsHelper
 {
-	partial class RemeberWordsForm
+	partial class RememberWordsForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -33,9 +33,7 @@
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
 			this.tbUkr = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
-			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.contextMenuStrip1.SuspendLayout();
+			this.btnParam = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// tbEng
@@ -51,7 +49,6 @@
 			// 
 			// notifyIcon1
 			// 
-			this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
 			this.notifyIcon1.Text = "Remember Word Helper";
 			this.notifyIcon1.Visible = true;
 			// 
@@ -70,26 +67,25 @@
 			this.btnAdd.BackColor = System.Drawing.SystemColors.ButtonFace;
 			this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.btnAdd.ForeColor = System.Drawing.Color.Teal;
-			this.btnAdd.Location = new System.Drawing.Point(13, 105);
+			this.btnAdd.Location = new System.Drawing.Point(12, 105);
 			this.btnAdd.Name = "btnAdd";
-			this.btnAdd.Size = new System.Drawing.Size(309, 47);
+			this.btnAdd.Size = new System.Drawing.Size(250, 50);
 			this.btnAdd.TabIndex = 2;
 			this.btnAdd.Text = "Add";
 			this.btnAdd.UseVisualStyleBackColor = false;
 			// 
-			// contextMenuStrip1
+			// btnParam
 			// 
-			this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.closeToolStripMenuItem});
-			this.contextMenuStrip1.Name = "contextMenuStrip1";
-			this.contextMenuStrip1.Size = new System.Drawing.Size(104, 26);
-			// 
-			// closeToolStripMenuItem
-			// 
-			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.closeToolStripMenuItem.Text = "Close";
-			this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+			this.btnParam.BackColor = System.Drawing.SystemColors.ButtonFace;
+			this.btnParam.BackgroundImage = global::RememberWordsHelper.Properties.Resources.paramImg;
+			this.btnParam.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btnParam.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btnParam.ForeColor = System.Drawing.Color.Teal;
+			this.btnParam.Location = new System.Drawing.Point(272, 105);
+			this.btnParam.Name = "btnParam";
+			this.btnParam.Size = new System.Drawing.Size(50, 50);
+			this.btnParam.TabIndex = 3;
+			this.btnParam.UseVisualStyleBackColor = false;
 			// 
 			// RemeberWordsForm
 			// 
@@ -97,6 +93,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 			this.ClientSize = new System.Drawing.Size(334, 161);
+			this.Controls.Add(this.btnParam);
 			this.Controls.Add(this.btnAdd);
 			this.Controls.Add(this.tbUkr);
 			this.Controls.Add(this.tbEng);
@@ -108,7 +105,6 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Remember Words Helper";
 			this.TopMost = true;
-			this.contextMenuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -120,8 +116,7 @@
 		private System.Windows.Forms.NotifyIcon notifyIcon1;
 		private System.Windows.Forms.TextBox tbUkr;
 		private System.Windows.Forms.Button btnAdd;
-		private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-		private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+		private System.Windows.Forms.Button btnParam;
 	}
 }
 

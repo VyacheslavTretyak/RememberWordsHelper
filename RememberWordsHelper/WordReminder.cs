@@ -9,40 +9,56 @@ using System.Globalization;
 namespace RememberWordsHelper
 {
 	class WordReminder
-	{
+	{		
 		private List<WordStruct> words;
-		private string fileName;
+		private List<WordStruct> archive;
+		private string dataFileName;
+		private string archiveFileName;
 		private Random rnd;
-		public WordReminder()
+		private int next;
+		private AppParams param;
+		public WordReminder(AppParams _param)
 		{
+			param = _param;
 			words = new List<WordStruct>();
+			archive = new List<WordStruct>();
+			dataFileName = "words.txt";
+			archiveFileName = "archive.txt";
 			rnd = new Random();
-			fileName = "words.txt";
 			LoadWords();
+			
 		}
 		public WordStruct Next()
 		{
-			bool show = false;
 			WordStruct word = null;
-			while (!show)
-			{
-				word = words[rnd.Next(0, words.Count)];
-				TimeSpan addSpan = DateTime.Now - word.Time;
-				TimeSpan lastSpan = DateTime.Now - word.LastShow;
-				if (addSpan.Days < 2 && lastSpan.Hours > 1)
+			bool isShow = false;
+			while (!isShow)
+			{				
+				if(next >= words.Count)
 				{
-					show = true;
+					break;
 				}
-				else if (addSpan.Days < 7 && lastSpan.Hours > 24)
+				word = words[next++];
+				TimeSpan lastShow = DateTime.Now - word.LastShow;
+				TimeSpan added = DateTime.Now - word.Time;
+				if (added.TotalHours < param.Max1 && lastShow.TotalHours > param.Freq1)
 				{
-					show = true;
+					isShow = true;
 				}
-				else if (addSpan.Days < 30 && lastSpan.Days > 7)
+				else if (added.TotalDays < param.Max2 && lastShow.TotalHours > param.Freq2)
 				{
-					show = true;
+					isShow = true;
 				}
-			}
-			word.LastShow = DateTime.Now;
+				else if (added.TotalDays < param.Max3 && lastShow.TotalDays > param.Freq3)
+				{
+					isShow = true;
+				}
+				else
+				{
+					words.Remove(word);
+					archive.Add(word);
+				}
+			}			
 			return word;
 		}
 		public void Close()
@@ -53,8 +69,8 @@ namespace RememberWordsHelper
 		{
 			StreamReader sr = null;
 			try
-			{
-				sr = new StreamReader(fileName);
+			{				
+				sr = new StreamReader(dataFileName);
 				while (!sr.EndOfStream)
 				{
 					string[] str = sr.ReadLine().Split(";".ToArray());
@@ -62,10 +78,11 @@ namespace RememberWordsHelper
 					{
 						Eng = str[0],
 						Ukr = str[1],
-						Time = DateTime.ParseExact(str[2], "dd.MM.yyyy H:mm:ss", CultureInfo.InvariantCulture)
+						Time = DateTime.ParseExact(str[2], "dd.MM.yyyy H:mm:ss", CultureInfo.InvariantCulture),
+						LastShow = DateTime.ParseExact(str[3], "dd.MM.yyyy H:mm:ss", CultureInfo.InvariantCulture)
 					};
 					words.Add(wordStruct);
-				}
+				}				
 			}
 			catch(Exception ex)
 			{
@@ -79,15 +96,33 @@ namespace RememberWordsHelper
 				}
 			}
 		}
+		private void Shuffle()
+		{
+			List<WordStruct> newList = new List<WordStruct>();
+			Random rnd = new Random();
+			while(words.Count > 0)
+			{
+				int r = rnd.Next(0, words.Count);
+				newList.Add(words[r]);
+				words.RemoveAt(r);
+			}
+			words = newList;
+		}
 		private void SaveWords()
 		{
-			StreamWriter sw = null;
+			StreamWriter swWords = null;
+			StreamWriter swArchive = null;
 			try
-			{
-				sw = new StreamWriter(fileName);
-				foreach(WordStruct ws in words)
+			{				
+				swWords = new StreamWriter(dataFileName);
+				foreach (WordStruct ws in words)
 				{
-					sw.WriteLine($"{ws.Eng};{ws.Ukr};{ws.Time.ToString()}");
+					swWords.WriteLine($"{ws.Eng};{ws.Ukr};{ws.Time.ToString()};{ws.LastShow.ToString()}");
+				}
+				swArchive = new StreamWriter(archiveFileName, true);
+				foreach (WordStruct ws in archive)
+				{
+					swArchive.WriteLine($"{ws.Eng};{ws.Ukr};{ws.Time.ToString()};{ws.LastShow.ToString()}");					
 				}
 			}
 			catch (Exception ex)
@@ -96,9 +131,13 @@ namespace RememberWordsHelper
 			}
 			finally
 			{
-				if (sw != null)
+				if (swWords != null)
 				{
-					sw.Close();
+					swWords.Close();
+				}
+				if (swArchive != null) ;
+				{
+					swArchive.Close();
 				}
 			}
 		}
@@ -109,8 +148,7 @@ namespace RememberWordsHelper
 				Eng = en,
 				Ukr = ua,
 				Time = DateTime.Now,
-				LastShow = DateTime.Now,
-				CountShow = 0
+				LastShow = DateTime.Now
 			};
 			words.Add(wordStruct);
 		}
